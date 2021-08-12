@@ -1,0 +1,23 @@
+{
+  "name": "discord-js-starter",
+  "version": "1.0.0",
+  "description": "Discord.js project starter.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "update": "git pull && npm install"
+  },
+  "author": "H3X <h.alibalcioglu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/rest": "*",
+    "discord.js": "^13.0.1",
+    "dotenv": "^10.0.0",
+    "validatorjs": "^3.22.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
