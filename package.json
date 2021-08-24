@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/rest": "*",
+    "discord-logs": "^2.0.1",
     "discord.js": "^13.0.1",
     "dotenv": "^10.0.0",
     "validatorjs": "^3.22.1",

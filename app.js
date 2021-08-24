@@ -2,9 +2,14 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const { Client, Intents, Collection } = require('discord.js');
 dotenv.config();
+
+// TODO intents should be in config file
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
 // LOGGER INITIATE
 require('./utils/logger').init(client);
+const logs = require('discord-logs');
+logs(client);
 
 client.commands = new Collection();
 client.chat_commands = new Collection();

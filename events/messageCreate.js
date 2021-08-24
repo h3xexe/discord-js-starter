@@ -3,6 +3,8 @@ const validator = require('../utils/validator');
 module.exports = {
 	name: 'messageCreate',
 	async execute(message, client) {
+		// TODO Chat command handler shoul be in dedicated file
+		// CHAT COMMAND HANDLER
 		if (!message.content.startsWith(process.env.PREFIX)) return;
 		const parsedMessage = message.content.split(' ');
 		const commandName = parsedMessage[0].slice(process.env.PREFIX.length);
@@ -18,8 +20,9 @@ module.exports = {
 			command.execute(client, message, inputs);
 		}
 		catch (error) {
-			if (error?.name !== 'ValidationFailed') {return await message.reply({ content: 'There was an error while executing this command!' });}
-			return await message.reply(error.message);
+			if (error?.name === 'ValidationFailed') {return await message.reply(error.message);}
+			return await message.reply({ content: 'There was an error while executing this command!' });
 		}
+		// END CHAT COMMAND HANDLER
 	},
 };
