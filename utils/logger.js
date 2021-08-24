@@ -1,16 +1,18 @@
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp } = format;
+const { combine, timestamp, colorize } = format;
 
 module.exports = {
 	init :  async (client) => {
 		client.logger = createLogger({
 			transports: [
-				new transports.Console(),
-				new transports.File({ filename: 'log' }),
+				new transports.Console({ format: combine(colorize({
+					all:true,
+				})) }),
+				new transports.File({ filename: 'log', timestamp: true }),
 			],
 			format: combine(
-				format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
-				timestamp(),
+				timestamp({ format:'YY-MM-DD HH:MM:SS' }),
+				format.printf(log => `${log.timestamp} [${log.level.toUpperCase()}] ${log.message}`),
 			),
 		});
 
@@ -19,7 +21,6 @@ module.exports = {
 		client.on('debug', m => client.logger.debug(m));
 		client.on('warn', m => client.logger.warn(m));
 		client.on('error', m => client.logger.error(m));
-
 		process.on('uncaughtException', error => client.logger.error(error));
 	},
 };
