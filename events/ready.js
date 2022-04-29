@@ -19,6 +19,11 @@ module.exports = {
 			await client.application?.commands.set(commands);
 		}
 
+		// CALLING BOOT FUNCTIONS
+		client.chat_commands.forEach(command => {
+			if (command.boot) {command.boot(client);}
+		});
+
 		// UPDATING SERVER COMMANDS
 		if (process.env.TEST_GUILD) {
 			client.guilds.cache.get(process.env.TEST_GUILD)?.commands.set(commands);
