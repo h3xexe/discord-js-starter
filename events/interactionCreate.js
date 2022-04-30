@@ -7,7 +7,7 @@ module.exports = {
 			await interaction.client.commands.get(interaction.commandName).execute(interaction);
 		}
 		catch (error) {
-			interaction.client.logger.error(error);
+			interaction.client.logger.error(error.stack);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	},

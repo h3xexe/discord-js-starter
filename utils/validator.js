@@ -10,7 +10,12 @@ module.exports = {
 		};
 	},
 	validate(options, args) {
+		const notRuledInput = {};
 		for (let i = 0; i < options.length; i++) {
+			if (!options[i].rule) {
+				notRuledInput[options[i].name] = args?.[i];
+				continue;
+			}
 			this.inputs[options[i].name] = args?.[i];
 			this.rules[options[i].name] = options[i].rule;
 		}
@@ -18,6 +23,6 @@ module.exports = {
 		if (validation.fails()) {
 			throw this.validationException(validation.errors['errors'][Object.keys(validation.errors['errors'])[0]][0]);
 		}
-		return this.inputs;
+		return Object.assign(this.inputs, notRuledInput);
 	},
 };

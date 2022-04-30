@@ -21,6 +21,6 @@ module.exports = {
 		client.on('debug', m => client.logger.debug(m));
 		client.on('warn', m => client.logger.warn(m));
 		client.on('error', m => client.logger.error(m));
-		process.on('uncaughtException', error => client.logger.error(error));
+		process.on('uncaughtException', error => client.logger.error(error.stack));
 	},
 };

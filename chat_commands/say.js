@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Say something!',
 	options: [{
 		name: 'wordToSay',
-		// TODO a beautiful name field. (Human readable)
+		readable: 'Anything you want',
 		description: 'Anything you want bot to say.',
 		// Rule of validatorjs
 		rule: 'required|min:2|max:25',
