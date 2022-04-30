@@ -2,11 +2,27 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'ping',
 	description: 'Pong',
+	secondsToDhms(seconds) {
+		seconds = Number(seconds) / 1000;
+		const d = Math.floor(seconds / (3600 * 24));
+		const h = Math.floor(seconds % (3600 * 24) / 3600);
+		const m = Math.floor(seconds % 3600 / 60);
+		const s = Math.floor(seconds % 60);
+
+		const dDisplay = d > 0 ? d + (d === 1 ? ' day, ' : ' days, ') : '';
+		const hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : '';
+		const mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : '';
+		const sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : '';
+		return dDisplay + hDisplay + mDisplay + sDisplay;
+	},
 	async execute(client, message) {
+		console.log(message.guild.settings);
+		console.log(message.guild.name);
 		const newMessageTimestamp = await message.channel.send('Pinging...').then(m => m.createdTimestamp);
 		const embed = new MessageEmbed()
-			.addField('💻 API Latency', `${Math.round(message.client.ws.ping)}ms`)
-			.addField('🏓 Latency', `${newMessageTimestamp - message.createdTimestamp}ms`);
+			.addField('💻 API Latency', `╚═\`\`${Math.round(message.client.ws.ping)}ms\`\``, true)
+			.addField('🏓 Latency', `╚═\`\`${newMessageTimestamp - message.createdTimestamp}ms\`\``, true)
+			.addField('⏱️ Uptime', `╚═\`\`${this.secondsToDhms(client.uptime)}\`\``, true);
 		message.reply({ embeds: [embed] });
 	},
 };
