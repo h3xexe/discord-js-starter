@@ -6,6 +6,10 @@ dotenv.config();
 // TODO intents should be in config file
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
+// PRISMA INITIATE
+client.db = require('./utils/db');
+client.db.init(client);
+
 // LOGGER INITIATE
 require('./utils/logger').init(client);
 const logs = require('discord-logs');

@@ -4,10 +4,13 @@ module.exports = {
 	name: 'messageCreate',
 	async execute(message, client) {
 		// TODO Chat command handler shoul be in dedicated file
+		if (!message.guild.settings) {
+			message.guild.settings = await client.db.createOrGetGuild(message.guild);
+		}
 		// CHAT COMMAND HANDLER
-		if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
+		if (!message.content.startsWith(message.guild.settings.prefix) || message.author.bot) return;
 		const parsedMessage = message.content.split(' ');
-		const commandName = parsedMessage[0].slice(process.env.PREFIX.length);
+		const commandName = parsedMessage[0].slice(message.guild.settings.prefix.length);
 		let inputs = {};
 		try {
 			const command = client.chat_commands.get(commandName);

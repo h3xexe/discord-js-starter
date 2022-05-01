@@ -1,3 +1,5 @@
+dev.db*
+prisma/migrations
 .env
 .idea/
 # Logs

@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'ping',
-	description: 'Pong',
+	description: 'Get latency information with some extra data.',
 	secondsToDhms(seconds) {
 		seconds = Number(seconds) / 1000;
 		const d = Math.floor(seconds / (3600 * 24));
@@ -16,13 +16,12 @@ module.exports = {
 		return dDisplay + hDisplay + mDisplay + sDisplay;
 	},
 	async execute(client, message) {
-		console.log(message.guild.settings);
-		console.log(message.guild.name);
 		const newMessageTimestamp = await message.channel.send('Pinging...').then(m => m.createdTimestamp);
 		const embed = new MessageEmbed()
+			.setColor(process.env.EMBED_COLOR || '#ffffff')
 			.addField('💻 API Latency', `╚═\`\`${Math.round(message.client.ws.ping)}ms\`\``, true)
 			.addField('🏓 Latency', `╚═\`\`${newMessageTimestamp - message.createdTimestamp}ms\`\``, true)
-			.addField('⏱️ Uptime', `╚═\`\`${this.secondsToDhms(client.uptime)}\`\``, true);
+			.addField('⏱️ Uptime', `╚═\`\`${this.secondsToDhms(client.uptime)}\`\``);
 		message.reply({ embeds: [embed] });
 	},
 };

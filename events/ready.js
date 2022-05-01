@@ -24,6 +24,24 @@ module.exports = {
 			if (command.boot) {command.boot(client);}
 		});
 
+		// CREATE DB RECORDS OF GUILDS
+		// Last seen date
+		const lastSeen = new Date().toISOString();
+		for (const guildObject of client.guilds.cache) {
+			guildObject[1].settings = await client.db.createOrGetGuild(guildObject[1], lastSeen);
+		}
+		// Update kicked servers
+		await client.prisma.guilds.updateMany({
+			where: {
+				NOT: {
+					lastSeen: lastSeen,
+				},
+			},
+			data: {
+				kicked: true,
+			},
+		});
+
 		// UPDATING SERVER COMMANDS
 		if (process.env.TEST_GUILD) {
 			client.guilds.cache.get(process.env.TEST_GUILD)?.commands.set(commands);
