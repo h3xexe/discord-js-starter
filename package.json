@@ -13,8 +13,8 @@
   "dependencies": {
     "@discordjs/rest": "*",
     "@prisma/client": "^3.13.0",
-    "discord-logs": "^2.0.1",
-    "discord.js": "^13.0.1",
+    "discord-logs": "^2.2.1",
+    "discord.js": "^14.13.0",
     "dotenv": "^10.0.0",
     "validatorjs": "^3.22.1",
     "winston": "^3.3.3"

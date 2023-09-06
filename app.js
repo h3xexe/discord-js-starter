@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require('node:fs');
 const dotenv = require('dotenv');
-const { Client, Intents, Collection } = require('discord.js');
+const { Client, Intents, Collection, REST, Routes } = require('discord.js');
 dotenv.config();
 
 // TODO intents should be in config file
@@ -15,19 +15,38 @@ require('./utils/logger').init(client);
 const logs = require('discord-logs');
 logs(client);
 
-client.commands = new Collection();
-client.chat_commands = new Collection();
-
-// SLASH COMMAND HANDLING
+// REGISTER SLASH COMMANDS
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-	client.logger.info(`${command.name} Command loaded!`);
+const commands = []
+for (const fileName of commandFiles) {
+	const command = require(`./commands/${fileName}`);
+	if ('data' in command && 'execute' in command) {
+		commands.push(command.data.toJSON());
+	} else {
+		client.logger.warn(`The command at ${fileName} is missing a required "data" or "execute" property.`);
+	}
 }
+const rest = new REST().setToken(process.env.TOKEN);
 
-// MESSAGE COMMAND HANDLING
+(async () => {
+	try {
+		client.logger.info(`Started refreshing ${commands.length} application (/) commands.`);
+
+		// The put method is used to fully refresh all commands in the guild with the current set
+		const data = await rest.put(
+			Routes.applicationCommands(process.env.CLIENT_ID),
+			{ body: commands },
+		);
+
+		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+	} catch (error) {
+		// And of course, make sure you catch and log any errors!
+		console.error(error);
+	}
+})();
+
+// REGISTER CHAT COMMANDS
+client.chat_commands = new Collection();
 const chatCommandFiles = fs.readdirSync('./chat_commands').filter(file => file.endsWith('.js'));
 
 for (const file of chatCommandFiles) {
