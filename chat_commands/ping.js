@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'ping',
 	description: 'Get latency information with some extra data.',
@@ -17,11 +17,14 @@ module.exports = {
 	},
 	async execute(client, message) {
 		const newMessageTimestamp = await message.channel.send('Pinging...').then(m => m.createdTimestamp);
-		const embed = new MessageEmbed()
-			.setColor(process.env.EMBED_COLOR || '#ffffff')
-			.addField('💻 API Latency', `╚═\`\`${Math.round(message.client.ws.ping)}ms\`\``, true)
-			.addField('🏓 Latency', `╚═\`\`${newMessageTimestamp - message.createdTimestamp}ms\`\``, true)
-			.addField('⏱️ Uptime', `╚═\`\`${this.secondsToDhms(client.uptime)}\`\``);
+		const embed = new EmbedBuilder()
+			// .setColor(process.env.EMBED_COLOR || '#ffffff')
+			.addFields(
+				{ name: '💻 API Latency', value: `╚═\`\`${Math.round(message.client.ws.ping)}ms\`\``, inline:true },
+				{ name:'🏓 Latency', value: `╚═\`\`${newMessageTimestamp - message.createdTimestamp}ms\`\``, inline:true },
+				{ name:'⏱️ Uptime', value: `╚═\`\`${this.secondsToDhms(client.uptime)}\`\``, inline:false },
+
+			);
 		message.reply({ embeds: [embed] });
 	},
 };

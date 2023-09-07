@@ -1,5 +1,8 @@
+const { Events } = require('discord.js');
+
+
 module.exports = {
-	name: 'ready',
+	name: Events.ClientReady,
 	once: true,
 	async execute(client) {
 		// eslint-disable-next-line no-unused-vars
@@ -10,18 +13,18 @@ module.exports = {
 		 * New global commands will fan out slowly across all guilds and will only be guaranteed to be updated after an hour.
 		 * Guild commands update instantly.
 		 **/
-		if (process.env?.DEBUG_MODE === 'true') {
-			client.application?.commands.set([]);
-			client.logger.warn('Global command reset done');
-		}
-		else {
-			client.logger.warn('Updating global commands');
-			await client.application?.commands.set(commands);
-		}
+		// if (process.env?.DEBUG_MODE === 'true') {
+		// 	client.application?.commands.set([]);
+		// 	client.logger.warn('Global command reset done');
+		// }
+		// else {
+		// 	client.logger.warn('Updating global commands');
+		// 	await client.application?.commands.set(commands);
+		// }
 
 		// CALLING BOOT FUNCTIONS
 		client.chat_commands.forEach(command => {
-			if (command.boot) {command.boot(client);}
+			if ('boot' in command) {command.boot(client);}
 		});
 
 		// CREATE DB RECORDS OF GUILDS

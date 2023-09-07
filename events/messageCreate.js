@@ -1,9 +1,11 @@
 const validator = require('../utils/validator');
+const { Events } = require('discord.js');
+
 
 module.exports = {
-	name: 'messageCreate',
+	name: Events.MessageCreate,
 	async execute(message, client) {
-		// TODO Chat command handler shoul be in dedicated file
+		// TODO Chat command handler should be in dedicated file
 		if (!message.guild.settings) {
 			message.guild.settings = await client.db.createOrGetGuild(message.guild);
 		}
