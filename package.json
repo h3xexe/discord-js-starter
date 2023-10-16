@@ -17,7 +17,7 @@
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "validatorjs": "^3.22.1",
-    "winston": "^3.3.3"
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
